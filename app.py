@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from analysis import (
@@ -89,5 +91,8 @@ def export():
         json_data = export_songs_as(tenant_id, format="json")
         return jsonify(json_data)
 
+# if __name__ == "__main__":
+#     app.run(port=5001, debug=True)
 if __name__ == "__main__":
-    app.run(port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=True)
