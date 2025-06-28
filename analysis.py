@@ -1,13 +1,26 @@
 import psycopg2
 import pandas as pd
 from datetime import datetime, timedelta
+import os
+from urllib.parse import urlparse
+
+# def get_db_conn():
+#     return psycopg2.connect(
+#         host="localhost",
+#         database="musictrend",
+#         user="postgres",
+#         password="Tushar@1745"  # 🔐 Use env var in production
+#     )
 
 def get_db_conn():
+    url = urlparse(os.environ.get("DATABASE_URL"))
+
     return psycopg2.connect(
-        host="localhost",
-        database="musictrend",
-        user="postgres",
-        password="Tushar@1745"  # 🔐 Use env var in production
+        database=url.path[1:],  # Remove leading /
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
     )
 
 def get_trending_songs(tenant_id):
