@@ -21,11 +21,13 @@ def home():
 @app.route("/trending-songs", methods=["POST"])
 def trending_songs():
     data = request.get_json()
-    tenant_id = data.get("tenantId")
+    print("📥 Received JSON:", data)  # <-- Add this
+    tenant_id = data.get("tenantId") if data else None
     if not tenant_id:
         return jsonify({"error": "Missing tenantId"}), 400
     result = get_trending_songs(tenant_id)
     return jsonify(result)
+
 
 @app.route("/trending-artists", methods=["POST"])
 def trending_artists():
